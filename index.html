@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalog</title>
+    <link rel="stylesheet" href="catalog.css">
 </head>
 <body>
     <script>
@@ -11,6 +12,25 @@
         // Redirect ke login.html jika belum login
         window.location.href = 'login.html';
     }
-</script>
+    </script>
+
+
+    <!-- Keranjang Belanja -->
+    <div class="cart-container">
+        <div class="cart-header">
+            <h2>Keranjang</h2>
+            <span id="cart-badge">0</span>
+        </div>
+        <div id="cart-items" class="cart-items">
+            <p class="empty-cart">Keranjang masih kosong.</p>
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total</span>
+                <strong id="cart-total">$0.00</strong>
+            </div>
+        </div>
+    </div>
+
 </body>
 </html>
