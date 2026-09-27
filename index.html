@@ -7,13 +7,40 @@
     <link rel="stylesheet" href="catalog.css">
 </head>
 <body>
+    <!-- Auth Guard: Redirect ke login jika belum ada sesi -->
     <script>
-    if (!localStorage.getItem('firstName')) {
-        // Redirect ke login.html jika belum login
-        window.location.href = 'login.html';
-    }
+        if (!localStorage.getItem('firstName')) {
+            window.location.href = 'login.html';
+        }
     </script>
 
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="navbar-brand">C<i><b>ATA</b></i>LOG</div>
+        <div class="navbar-user">
+            <span id="welcomeText"></span>
+            <button id="logoutBtn" type="button">Logout</button>
+        </div>
+    </nav>
+
+    <!-- Product Catalog: Toolbar & Grid -->
+    <div class="catalog-section">
+        <section class="toolbar">
+            <input type="text" id="searchInput" placeholder="Cari produk berdasarkan nama atau kategori...">
+            <select id="categoryFilter">
+                <option value="">Semua Kategori</option>
+            </select>
+            <select id="sortSelect">
+                <option value="">Urutkan</option>
+                <option value="price-asc">Harga: Termurah</option>
+                <option value="price-desc">Harga: Termahal</option>
+                <option value="rating-desc">Rating Tertinggi</option>
+            </select>
+        </section>
+
+        <p id="productStatus" class="product-status"></p>
+        <div id="productGrid" class="product-grid"></div>
+    </div>
 
     <!-- Keranjang Belanja -->
     <div class="cart-container">
@@ -24,7 +51,7 @@
         <div id="cart-items" class="cart-items">
             <p class="empty-cart">Keranjang masih kosong.</p>
         </div>
-        <div class="cart-footer">
+        <div id="cart-footer" class="cart-footer">
             <div class="cart-total">
                 <span>Total</span>
                 <strong id="cart-total">$0.00</strong>
@@ -32,5 +59,6 @@
         </div>
     </div>
 
+    <script src="catalog.js" defer></script>
 </body>
 </html>
