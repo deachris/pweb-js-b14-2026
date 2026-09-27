@@ -34,7 +34,7 @@ document.getElementById('loginForm').addEventListener('submit', async function (
         errorMessage.textContent = 'Terjadi kesalahan koneksi jaringan atau server.';
         errorMessage.style.display = 'block';
     } finally {
-        // Mengembalikan tombol ke keadaan semula
+        // Mengembalikan tombol ke default
         loginBtn.textContent = 'Masuk';
         loginBtn.disabled = false;
     }
