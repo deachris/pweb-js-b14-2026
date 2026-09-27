@@ -91,6 +91,9 @@ function updateCartUI() {
     const badge =
         document.getElementById("cart-badge");
 
+    const navBadge = 
+        document.getElementById("nav-cart-badge");
+
     const totalElement =
         document.getElementById("cart-total");
 
@@ -103,6 +106,7 @@ function updateCartUI() {
     );
 
     badge.textContent = totalQuantity;
+    navBadge.textContent = totalQuantity;
 
     totalElement.textContent = `$${totalPrice.toFixed(2)}`;
     renderCartItems();

@@ -81,7 +81,7 @@ function showProductDetail(product) {
         `Harga: $${product.price}`;
 
     document.getElementById('popUpDiscount').textContent =
-        `${Math.round(product.discountPercentage)}%`; 
+        `-${Math.round(product.discountPercentage)}%`; 
 
     document.getElementById('popUpRating').textContent =
         `⭐ ${product.rating}`;
