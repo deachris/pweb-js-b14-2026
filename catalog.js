@@ -2,6 +2,9 @@ const PRODUCTS_API = 'https://dummyjson.com/products?limit=0';
 
 let allProducts = [];
 let displayedProducts = [];
+let filteredProducts = [];
+let currentPage = 1;
+const productsPerPage = 14;
 
 // Navigation Bar
 function initNavbar() {
@@ -54,8 +57,46 @@ function createProductCard(product) {
                 ${hasDiscount ? `<span class="product-discount">-${Math.round(product.discountPercentage)}%</span>` : ''}
             </div>
             <p class="product-rating">⭐ ${product.rating}</p>
+
+            <button class="add-to-cart" data-id="${product.id}">
+                Tambah ke Keranjang
+            </button>
         </div>
     `;
+}
+
+// Detail Produk
+function showProductDetail(product) {
+    document.getElementById('popUpImage').src = product.thumbnail;
+    document.getElementById('popUpImage').alt = product.title;
+
+    document.getElementById('popUpTitle').textContent = product.title;
+    document.getElementById('popUpCategory').textContent =
+        `${product.category}`;
+
+    document.getElementById('popUpBrand').textContent =
+        `${product.brand || '-'}`;
+
+    document.getElementById('popUpPrice').textContent =
+        `Harga: $${product.price}`;
+
+    document.getElementById('popUpDiscount').textContent =
+        `${Math.round(product.discountPercentage)}%`; 
+
+    document.getElementById('popUpRating').textContent =
+        `⭐ ${product.rating}`;
+
+    document.getElementById('popUpStock').textContent =
+        `Stok tersedia: ${product.stock}`;
+
+    document.getElementById('popUpDesc').textContent =
+        product.description;
+
+    document.getElementById('popUpAddToCart').onclick = function() {
+        addToCart(product);
+    };
+
+    document.getElementById('productPopUp').style.display = 'flex';
 }
 
 function renderProducts(products) {
@@ -67,6 +108,32 @@ function renderProducts(products) {
     }
 
     grid.innerHTML = products.map(createProductCard).join('');
+}
+
+// Fungsi Load More Produk
+function loadMoreProducts() {
+    const startIndex = currentPage * productsPerPage;
+    const endIndex = (currentPage + 1) * productsPerPage;
+
+    const nextProducts = filteredProducts.slice(startIndex, endIndex);
+
+    displayedProducts = displayedProducts.concat(nextProducts);
+    renderProducts(displayedProducts);
+    currentPage++;
+
+    updateLoadMoreButton();
+}
+
+function updateLoadMoreButton() {
+    const button = document.getElementById('loadMoreBtn');
+
+    if (displayedProducts.length >= filteredProducts.length) {
+        button.style.display = 'none';
+    } 
+    else 
+    {
+        button.style.display = 'block';
+    }
 }
 
 // Debounce untuk Real-Time Search
@@ -118,8 +185,16 @@ function applyFiltersAndSort() {
         result = [...result].sort((a, b) => b.rating - a.rating);
     }
 
-    displayedProducts = result;
+
+    // Untuk fungsi Load More
+    filteredProducts = result;
+    currentPage = 1;
+
+    displayedProducts = filteredProducts.slice(0, productsPerPage);
+
     renderProducts(displayedProducts);
+
+    updateLoadMoreButton();
 }
 
 // Event Listeners & Inisialisasi
@@ -131,8 +206,76 @@ function initToolbarEvents() {
     document.getElementById('sortSelect').addEventListener('change', applyFiltersAndSort);
 }
 
+// === Load More ===
+function initLoadMoreEvents() {
+    document.getElementById('loadMoreBtn').addEventListener('click', loadMoreProducts);
+}
+
+// === Detail Produk ===
+function initProductDetailEvents() {
+    const productGrid = document.getElementById('productGrid');
+
+    productGrid.addEventListener('click', function(event) {
+        const card = event.target.closest('.product-card');
+        if (!card) {
+            return;
+        }
+
+        // Detail tidak bisa dibuka ketika tombol keranjang diklik
+        if (event.target.closest('.add-to-cart')) {
+            return;
+        }
+        const productId = Number(card.dataset.id);
+        const product = allProducts.find(item => item.id === productId);
+
+        if (!product) {
+            return;
+        }
+
+        showProductDetail(product);
+    });
+}
+
+function initPopUpEvents() {
+    const popUp = document.getElementById('productPopUp');
+    const closeButton = document.getElementById('closePopUp');
+
+    closeButton.addEventListener('click', function() {
+        popUp.style.display = 'none';
+    });
+
+    popUp.addEventListener('click', function(event) {
+        if (event.target === popUp) {
+            popUp.style.display = 'none';
+        }
+    });
+}
+
+// === Keranjang ===
+function initCartEvents() {
+    const productGrid = document.getElementById('productGrid');
+    productGrid.addEventListener('click', function(event) {
+        const button = event.target.closest('.add-to-cart');
+        if (!button) {
+            return;
+        }
+        const productId = Number(button.dataset.id);
+        const product = allProducts.find(item => item.id === productId
+        );
+
+        if (!product) {
+            return;
+        }
+        addToCart(product);
+    });
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     initNavbar();
     initToolbarEvents();
+    initCartEvents();
+    initLoadMoreEvents();
+    initProductDetailEvents();
+    initPopUpEvents();
     fetchProducts();
 });

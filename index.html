@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Catalog</title>
     <link rel="stylesheet" href="catalog.css">
+    <script src="cart.js" defer></script>
+    <script src="catalog.js" defer></script>
 </head>
 <body>
     <!-- Auth Guard: Redirect ke login jika belum ada sesi -->
@@ -40,9 +42,38 @@
 
         <p id="productStatus" class="product-status"></p>
         <div id="productGrid" class="product-grid"></div>
+        <button id="loadMoreBtn" type="button">Load More</button>
     </div>
 
-    <!-- Keranjang Belanja -->
+    <!-- Detail Produk (Pop Up)-->
+    <div id="productPopUp" class="product-popUp">
+        <div class="product-popUp-item">
+            <button id="closePopUp" class="close-popUp">&times;</button>
+        
+            <img id="popUpImage" src="" alt="">
+
+            <div class="popUpInfo">
+                <h2 id="popUpTitle"></h2>
+                <div id="popUpBrandRow">
+                    <p id="popUpCategory"></p>
+                    <p id="popUpBrand"></p>
+                </div>
+                <div id="popUpPriceRow">
+                    <p id="popUpPrice"></p>
+                    <p id="popUpDiscount"></p>
+                </div>
+                <p id="popUpRating"></p>
+                <p id="popUpStock"></p>
+                <p id="popUpDesc"></p>
+
+                <button id="popUpAddToCart" class="popUp-add-to-cart">
+                    Tambah ke Keranjang
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Keranjang Belanja --->
     <div class="cart-container">
         <div class="cart-header">
             <h2>Keranjang</h2>
@@ -58,8 +89,5 @@
             </div>
         </div>
     </div>
-
-    <script src="cart.js" defer></script>
-    <script src="catalog.js" defer></script>
 </body>
 </html>
